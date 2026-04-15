@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スマートロック状態管理</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/app.js" defer></script>
+</head>
+<body>
+    <main class="screen">
+        <section class="panel">
+            <header class="panel-head">
+                <p class="eyebrow">Smart Lock Tracker</p>
+                <h1>スマートロック状態管理</h1>
+                <p id="state-badge" class="state-badge">状態: 読み込み中...</p>
+            </header>
+
+            <div id="notice" class="notice" role="status" aria-live="polite"></div>
+
+            <section id="phase-1" class="phase">
+                <h2>Phase 1: 初期画面</h2>
+                <p>ドアを手動で操作した後、次の画面へ進んでください。</p>
+                <div class="button-row">
+                    <button id="btn-unlock" class="btn btn-primary">開錠</button>
+                    <button id="btn-home-index" class="btn btn-secondary">帰宅</button>
+                </div>
+            </section>
+
+            <section id="phase-2" class="phase hidden">
+                <h2>Phase 2: ユーザー選択</h2>
+                <p>操作者を選択してください。</p>
+                <div id="user-buttons" class="button-grid"></div>
+                <div class="button-row">
+                    <button id="btn-back-to-phase-1" class="btn btn-ghost">戻る</button>
+                </div>
+            </section>
+
+            <section id="phase-3" class="phase hidden">
+                <h2>Phase 3: 操作選択</h2>
+                <p id="selected-user-label" class="selected-user">操作者: 未選択</p>
+                <div class="button-row">
+                    <button id="btn-action-home" class="btn btn-primary">帰宅</button>
+                    <button id="btn-action-temp-lock" class="btn btn-warning">一時施錠</button>
+                </div>
+                <div class="button-row">
+                    <button id="btn-change-user" class="btn btn-ghost">ユーザーを選び直す</button>
+                </div>
+            </section>
+        </section>
+    </main>
+</body>
+</html>
