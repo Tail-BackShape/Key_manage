@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>スマートロック状態管理</title>
+    <title>施錠管理</title>
     <link rel="stylesheet" href="/static/style.css">
     <script src="/static/app.js" defer></script>
 </head>
@@ -11,15 +11,11 @@
     <main class="screen">
         <section class="panel">
             <header class="panel-head">
-                <h1>スマートロック状態管理</h1>
+                <h1>施錠管理</h1>
                 <p id="state-badge" class="state-badge">状態: 読み込み中...</p>
             </header>
 
-            <div id="notice" class="notice" role="status" aria-live="polite"></div>
-
             <section id="phase-1" class="phase">
-                <h2>初期画面</h2>
-                <p>操作を選択</p>
                 <div class="button-row">
                     <button id="btn-unlock" class="btn btn-primary">開錠</button>
                     <button id="btn-home-index" class="btn btn-secondary">帰宅</button>
@@ -28,7 +24,7 @@
 
             <section id="phase-2" class="phase hidden">
                 <h2>ユーザー選択</h2>
-                <p>操作者を選択</p>
+                <p id="phase-2-instruction">操作者を選択してください</p>
                 <div id="user-buttons" class="button-grid"></div>
                 <div class="button-row">
                     <button id="btn-back-to-phase-1" class="btn btn-ghost">戻る</button>
@@ -41,9 +37,6 @@
                 <div class="button-row">
                     <button id="btn-action-home" class="btn btn-primary">施錠・帰宅</button>
                     <button id="btn-action-temp-lock" class="btn btn-warning">一時施錠</button>
-                </div>
-                <div class="button-row">
-                    <button id="btn-change-user" class="btn btn-ghost">ユーザーを選び直す</button>
                 </div>
             </section>
         </section>
