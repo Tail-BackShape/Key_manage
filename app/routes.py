@@ -21,6 +21,12 @@ STATE_TRANSITIONS = {
     "home": LockState.LOCKED,
 }
 
+NEXT_PHASE_BY_ACTION = {
+    "unlock": "phase-2",
+    "temp_lock": "phase-2",
+    "home": "phase-1",
+}
+
 
 def _build_state_payload(state_store: StateStore) -> dict[str, object]:
     current = state_store.get_state()
@@ -78,6 +84,7 @@ def register_routes(
             "user": user,
             "action": action,
             "actionLabel": action_label,
+            "nextPhase": NEXT_PHASE_BY_ACTION[action],
             "notificationStatus": "sent" if sent else "failed",
             "notificationDetail": detail,
             **_build_state_payload(state_store),

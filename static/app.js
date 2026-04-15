@@ -12,9 +12,6 @@ const appState = {
 
 const phaseIds = Object.values(PHASE);
 
-const phase1 = document.getElementById("phase-1");
-const phase2 = document.getElementById("phase-2");
-const phase3 = document.getElementById("phase-3");
 const stateBadge = document.getElementById("state-badge");
 const notice = document.getElementById("notice");
 const selectedUserLabel = document.getElementById("selected-user-label");
@@ -41,7 +38,7 @@ function showPhase(phaseId) {
 
 function renderState() {
   const stateLabel = appState.lockState === "TEMP_LOCKED" ? "一時施錠" : "通常";
-  stateBadge.textContent = `状態: ${stateLabel} (${appState.lockState})`;
+  stateBadge.textContent = `状態: ${stateLabel}`;
 
   btnHomeIndex.style.display = appState.lockState === "TEMP_LOCKED" ? "inline-flex" : "none";
 }
@@ -65,7 +62,7 @@ function renderUsers() {
       appState.selectedUser = user;
       selectedUserLabel.textContent = `操作者: ${user}`;
       showPhase(PHASE.ACTION_SELECT);
-      setNotice("操作を選択してください。", "info");
+      setNotice("操作を選択", "info");
     });
     userButtonsContainer.appendChild(button);
   }
@@ -95,7 +92,7 @@ async function bootstrap() {
   renderState();
   renderUsers();
   showPhase(PHASE.INDEX);
-  setNotice("準備ができました。", "info");
+  setNotice("準備完了", "info");
 }
 
 async function submitAction(action) {
@@ -129,22 +126,29 @@ async function submitAction(action) {
   const noticeType = payload.notificationStatus === "sent" ? "success" : "warn";
   setNotice(`[${payload.timestamp}] ${payload.user} - ${payload.actionLabel} (${statusLabel})`, noticeType);
 
+  if (payload.nextPhase === PHASE.INDEX) {
+    appState.selectedUser = "";
+    selectedUserLabel.textContent = "操作者: 未選択";
+    showPhase(PHASE.INDEX);
+    return;
+  }
+
   showPhase(PHASE.USER_SELECT);
 }
 
 btnUnlock.addEventListener("click", () => {
   showPhase(PHASE.USER_SELECT);
-  setNotice("操作者を選択してください。", "info");
+  setNotice("操作者を選択", "info");
 });
 
 btnHomeIndex.addEventListener("click", () => {
   showPhase(PHASE.USER_SELECT);
-  setNotice("操作者を選択してください。", "info");
+  setNotice("操作者を選択", "info");
 });
 
 btnBackToPhase1.addEventListener("click", () => {
   showPhase(PHASE.INDEX);
-  setNotice("初期画面に戻りました。", "info");
+  setNotice("初期画面", "info");
 });
 
 btnActionHome.addEventListener("click", async () => {
@@ -165,7 +169,7 @@ btnActionTempLock.addEventListener("click", async () => {
 
 btnChangeUser.addEventListener("click", () => {
   showPhase(PHASE.USER_SELECT);
-  setNotice("操作者を選び直してください。", "info");
+  setNotice("操作者を選び直し", "info");
 });
 
 (async () => {
