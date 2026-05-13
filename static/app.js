@@ -237,9 +237,10 @@ btnHomeIndex.addEventListener("click", async () => {
 
 btnBackToPhase1.addEventListener("click", async () => {
   try {
-    const payload = await postJson("/api/flow/reset", {});
+    const payload = await postJson("/api/flow/back", {});
     applyFlowPayload(payload);
-    setNotice("初期画面", "info");
+    const message = payload.currentPhase === PHASE.ACTION_SELECT ? "操作を選択" : "初期画面";
+    setNotice(message, "info");
   } catch (error) {
     setNotice(error.message, "error");
   }

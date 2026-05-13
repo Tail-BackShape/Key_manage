@@ -144,7 +144,8 @@ def register_routes(
             return jsonify({"error": "entryAction が不正です"}), HTTPStatus.BAD_REQUEST
 
         state_store.set_pending_entry_action(entry_action)
-        state_store.clear_selected_user()
+        if entry_action in {"unlock", "home"}:
+            state_store.clear_selected_user()
         state_store.set_flow_phase(PHASE_USER_SELECT)
 
         return jsonify(_build_state_payload(state_store)), HTTPStatus.OK
@@ -253,6 +254,19 @@ def register_routes(
     def reset_flow() -> tuple:
         state_store.set_flow_phase(PHASE_INDEX)
         state_store.clear_selected_user()
+        state_store.set_pending_entry_action(None)
+        return jsonify(_build_state_payload(state_store)), HTTPStatus.OK
+
+    @api.post("/api/flow/back")
+    def back_from_user_select() -> tuple:
+        pending_entry_action = state_store.get_pending_entry_action()
+
+        if pending_entry_action in {"unlock", "home"}:
+            state_store.set_flow_phase(PHASE_INDEX)
+            state_store.clear_selected_user()
+        else:
+            state_store.set_flow_phase(PHASE_ACTION_SELECT)
+
         state_store.set_pending_entry_action(None)
         return jsonify(_build_state_payload(state_store)), HTTPStatus.OK
 

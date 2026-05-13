@@ -39,6 +39,7 @@
 - GET /api/events: SSE で状態同期イベントを配信
 - POST /api/flow/start: エントリアクション開始（unlock / home / temp_lock）
 - POST /api/flow/select-user: ユーザー選択確定と必要な通知送信
+- POST /api/flow/back: ユーザー選択画面の戻る（前のフェーズへ）
 - POST /api/flow/reset: フローを初期画面へ戻す
 - POST /api/flow/change-user: ユーザー選択フェーズへ戻す
 - POST /api/action: 操作実行と通知
