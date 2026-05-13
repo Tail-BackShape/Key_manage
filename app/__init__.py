@@ -22,7 +22,7 @@ def create_app() -> Flask:
     app.config["APP_CONFIG"] = config
 
     state_store = StateStore(initial_state=LockState.LOCKED)
-    notifier = DiscordNotifier(config.discord_webhook_url)
+    notifier = DiscordNotifier(config.discord_webhook_url, verify_ssl=config.discord_ssl_verify)
     register_routes(app, state_store, notifier, config)
 
     return app

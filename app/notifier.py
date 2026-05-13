@@ -6,9 +6,10 @@ import requests
 
 
 class DiscordNotifier:
-    def __init__(self, webhook_url: str, timeout_seconds: int = 5) -> None:
+    def __init__(self, webhook_url: str, timeout_seconds: int = 5, verify_ssl: bool = True) -> None:
         self._webhook_url = webhook_url
         self._timeout_seconds = timeout_seconds
+        self._verify_ssl = verify_ssl
 
     def send_operation(self, operator: str, action_label: str, timestamp: str) -> Tuple[bool, str]:
         if not self._webhook_url:
@@ -18,7 +19,12 @@ class DiscordNotifier:
         payload = {"content": content}
 
         try:
-            response = requests.post(self._webhook_url, json=payload, timeout=self._timeout_seconds)
+            response = requests.post(
+                self._webhook_url,
+                json=payload,
+                timeout=self._timeout_seconds,
+                verify=self._verify_ssl,
+            )
             response.raise_for_status()
             return True, "通知を送信しました"
         except requests.RequestException as exc:

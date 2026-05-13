@@ -9,6 +9,7 @@ DEFAULT_USERS = ["ユーザー1", "ユーザー2"]
 @dataclass(frozen=True)
 class AppConfig:
     discord_webhook_url: str
+    discord_ssl_verify: bool
     users: list[str]
     time_format: str
     host: str
@@ -36,6 +37,7 @@ class AppConfig:
 
         return cls(
             discord_webhook_url=os.getenv("DISCORD_WEBHOOK_URL", "").strip(),
+            discord_ssl_verify=cls._parse_bool(os.getenv("DISCORD_SSL_VERIFY"), default=True),
             users=users,
             time_format=os.getenv("TIME_FORMAT", "%Y/%m/%d %H:%M:%S"),
             host=os.getenv("HOST", "0.0.0.0").strip() or "0.0.0.0",
